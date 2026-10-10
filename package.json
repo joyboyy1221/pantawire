@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@solana/web3.js": "^1.99.0",
     "isomorphic-git": "^1.42.6",
     "next": "16.3.8",
     "react": "19.2.8",

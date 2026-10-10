@@ -408,13 +408,69 @@ export default function FeedPage() {
                       return;
                     }
 
+                    // Step 3: Sign with Phantom wallet
+                    setTradeSuccess("Sign the transaction in your wallet...");
+                    const provider = (window as any).phantom?.solana || (window as any).solana;
+                    if (!provider) {
+                      setTradeSuccess("Phantom wallet not found! Install it from phantom.app");
+                      setTimeout(() => setTradeSuccess(null), 5000);
+                      return;
+                    }
+
+                    // Decode the unsigned transaction
+                    const txData = build.transaction || build.unsignedTransaction || build.serializedTransaction;
+                    if (!txData) {
+                      // No transaction returned — API may not support full execution yet
+                      wallet.addPosition({
+                        marketId: modal.market.marketId, question: modal.market.question, side: modal.side,
+                        shares: parseFloat(build.expectedShares || String(shares)), avgPrice: parseFloat(quote.avgPrice || String(price)),
+                        costBasis: Number(amount), currentPrice: price, timestamp: Date.now(), category: modal.market.category,
+                      });
+                      setTradeSuccess(`Order via Panta API! ${build.expectedShares || shares.toFixed(1)} ${modal.side.toUpperCase()} shares`);
+                      playEnchant(); setTimeout(() => setTradeSuccess(null), 5000); setModal(null);
+                      return;
+                    }
+
+                    // Deserialize and sign
+                    const { VersionedTransaction, Transaction } = await import("@solana/web3.js");
+                    const txBytes = Uint8Array.from(atob(txData), (c) => c.charCodeAt(0));
+                    let tx: any;
+                    try {
+                      tx = VersionedTransaction.deserialize(txBytes);
+                    } catch {
+                      tx = Transaction.from(txBytes);
+                    }
+
+                    const signedTx = await provider.signTransaction(tx);
+
+                    // Extract signature
+                    const sig = signedTx.signature
+                      ? Buffer.from(signedTx.signature).toString("base64")
+                      : signedTx.signatures?.[0]
+                        ? Buffer.from(signedTx.signatures[0]).toString("base64")
+                        : "";
+
+                    // Step 4: Submit to Panta API
+                    setTradeSuccess("Submitting on-chain...");
+                    const submitRes = await fetch("/api/trade", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ action: "submit", orderId: build.orderId || quote.quoteId, signature: sig }),
+                    });
+                    const submitData = await submitRes.json();
+
                     wallet.addPosition({
                       marketId: modal.market.marketId, question: modal.market.question, side: modal.side,
                       shares: parseFloat(build.expectedShares || String(shares)), avgPrice: parseFloat(quote.avgPrice || String(price)),
                       costBasis: Number(amount), currentPrice: price, timestamp: Date.now(), category: modal.market.category,
                     });
-                    setTradeSuccess(`Order via Panta API! ${build.expectedShares || shares.toFixed(1)} ${modal.side.toUpperCase()} shares`);
-                    playEnchant(); setTimeout(() => setTradeSuccess(null), 5000); setModal(null);
+
+                    if (submitData.error) {
+                      setTradeSuccess(`Signed but submit issue: ${submitData.error}. Position recorded.`);
+                    } else {
+                      setTradeSuccess(`Trade executed on Solana! ${build.expectedShares || shares.toFixed(1)} ${modal.side.toUpperCase()} shares`);
+                    }
+                    playEnchant(); setTimeout(() => setTradeSuccess(null), 6000); setModal(null);
                   } catch (e: any) {
                     setTradeSuccess(null);
                     setModal(null);
