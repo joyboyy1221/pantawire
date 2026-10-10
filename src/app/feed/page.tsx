@@ -366,7 +366,38 @@ export default function FeedPage() {
 
                 if (wallet.network === "mainnet") {
                   try {
-                    setTradeSuccess("Checking wallet & quoting via Panta API...");
+                    // Step 0: Check USDC balance on-chain first
+                    setTradeSuccess("Checking your USDC balance...");
+                    const USDC_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+                    const RPC = "https://api.mainnet-beta.solana.com";
+                    let usdcBalance = 0;
+                    try {
+                      const rpcRes = await fetch(RPC, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          jsonrpc: "2.0", id: 1, method: "getTokenAccountsByOwner",
+                          params: [wallet.address, { mint: USDC_MINT }, { encoding: "jsonParsed" }]
+                        })
+                      });
+                      const rpcData = await rpcRes.json();
+                      const accounts = rpcData?.result?.value || [];
+                      for (const acc of accounts) {
+                        const info = acc?.account?.data?.parsed?.info;
+                        if (info?.mint === USDC_MINT) {
+                          usdcBalance += parseFloat(info.tokenAmount?.uiAmountString || "0");
+                        }
+                      }
+                    } catch { /* RPC failed, proceed to API anyway */ }
+
+                    if (usdcBalance < Number(amount)) {
+                      setTradeSuccess(null);
+                      setTradeError(`Insufficient USDC balance!\n\nYour wallet: $${usdcBalance.toFixed(2)} USDC\nRequired: $${amount} USDC\n\nYou need $${(Number(amount) - usdcBalance).toFixed(2)} more USDC to place this trade.`);
+                      return;
+                    }
+
+                    // Step 1: Quote via Panta API
+                    setTradeSuccess("Quoting via Panta API...");
                     const quoteRes = await fetch("/api/trade", {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
@@ -375,7 +406,7 @@ export default function FeedPage() {
                     const quote = await quoteRes.json();
                     if (quote.error) {
                       setTradeSuccess(null);
-                      setTradeError(`You need $${amount} USDC on Solana to place this trade. Your wallet doesn't have enough USDC.`);
+                      setTradeError(`Quote failed: ${quote.error}. Your wallet has $${usdcBalance.toFixed(2)} USDC.`);
                       return;
                     }
 
