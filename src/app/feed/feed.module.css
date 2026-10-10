@@ -1,4 +1,4 @@
-﻿.feedWorld { min-height: 100vh; position: relative; z-index: 1; }
+.feedWorld { min-height: 100vh; position: relative; z-index: 1; }
 
 /* Hotbar */
 .hotbar { position: sticky; top: 0; z-index: 100; background: #2a2a2a; border-bottom: 4px solid; border-color: #555 #222 #222 #555; }
@@ -171,3 +171,10 @@
 .tradeToast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 9999; font-family: var(--font-pixel); font-size: 10px; color: var(--mc-xp-green); background: rgba(26,26,46,0.95); border: 3px solid var(--mc-xp-green); padding: 14px 28px; text-shadow: 1px 1px 0 #000; box-shadow: 0 0 20px rgba(128,255,32,0.3); animation: toastSlide 0.3s ease, toastGlow 2s ease-in-out infinite; }
 @keyframes toastSlide { from { transform: translateX(-50%) translateY(30px); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } }
 @keyframes toastGlow { 0%,100% { box-shadow: 0 0 20px rgba(128,255,32,0.3); } 50% { box-shadow: 0 0 30px rgba(128,255,32,0.5); } }
+
+/* Share button & clickable market link */
+.cardQLink { text-decoration: none; display: block; padding: 0 16px; }
+.cardQLink:hover .cardQ { color: var(--mc-diamond, #55ffff); }
+.cardFootRight { display: flex; align-items: center; gap: 8px; }
+.shareBtn { font-family: var(--font-pixel); font-size: 10px; padding: 4px 8px; background: transparent; border: 2px solid transparent; color: var(--text-gray); cursor: pointer; opacity: 0.5; transition: opacity 0.15s; }
+.shareBtn:hover { opacity: 1; border-color: #555; }

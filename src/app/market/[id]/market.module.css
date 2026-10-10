@@ -1,0 +1,107 @@
+.marketPage { min-height: 100vh; position: relative; z-index: 1; }
+
+/* Hotbar */
+.hotbar { position: sticky; top: 0; z-index: 100; background: #2a2a2a; border-bottom: 4px solid; border-color: #555 #222 #222 #555; }
+.hotbarInner { max-width: 1200px; margin: 0 auto; padding: 0 16px; height: 52px; display: flex; align-items: center; justify-content: space-between; }
+.logoWrap { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.logoImg { border-radius: 4px; image-rendering: pixelated; }
+.logoText { font-family: var(--font-pixel); font-size: 12px; color: var(--text-white); text-shadow: 2px 2px 0 #000; }
+.headerRight { display: flex; align-items: center; gap: 16px; }
+.mineBtn { font-family: var(--font-pixel); font-size: 8px; padding: 6px 14px; background: #3a3a3a; border: 3px solid; border-color: #555 #222 #222 #555; color: var(--text-gray); text-shadow: 1px 1px 0 #000; text-decoration: none; }
+.mineBtn:hover { background: #4a4a4a; color: var(--text-white); }
+.devnetBadge { font-family: var(--font-pixel); font-size: 7px; padding: 4px 10px; background: rgba(85,255,85,0.1); border: 2px solid rgba(85,255,85,0.3); color: #55ff55; }
+.mainnetBadge { font-family: var(--font-pixel); font-size: 7px; padding: 4px 10px; background: rgba(255,170,85,0.1); border: 2px solid rgba(255,170,85,0.3); color: #ffaa55; }
+.liveBadge { font-family: var(--font-pixel); font-size: 7px; color: #ff5555; display: flex; align-items: center; gap: 5px; padding: 4px 10px; background: rgba(255,85,85,0.1); border: 2px solid rgba(255,85,85,0.3); }
+.liveDot { width: 6px; height: 6px; background: #ff5555; animation: pulseDot 1.5s infinite; }
+@keyframes pulseDot { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+.walletBtn { font-family: var(--font-pixel); font-size: 8px; padding: 6px 14px; background: #559955; border: 3px solid; border-color: #77cc77 #2a6a2a #2a6a2a #77cc77; color: #fff; text-shadow: 1px 1px 0 #1a4a1a; cursor: pointer; }
+.walletBtn:hover { background: #66bb66; }
+.walletBtnConnected { font-family: var(--font-pixel); font-size: 8px; padding: 6px 14px; background: #1a4a1a; border: 3px solid; border-color: #2ee8bb #0a3a0a #0a3a0a #2ee8bb; color: #55ffff; text-shadow: 1px 1px 0 #000; cursor: pointer; }
+
+.content { max-width: 800px; margin: 0 auto; padding: 32px 20px; }
+.backLink { font-family: var(--font-pixel); font-size: 8px; color: var(--text-gray); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 20px; padding: 6px 12px; background: #2a2a2a; border: 2px solid #444; }
+.backLink:hover { color: var(--text-white); border-color: #666; }
+
+.marketCard { background: #2a2a2a; border: 4px solid; border-color: #555 #222 #222 #555; padding: 0; animation: slideUp 0.3s ease-out; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.cardHead { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 2px solid #333; }
+.cardCat { font-family: var(--font-pixel); font-size: 7px; color: #1a1a1a; background: var(--mc-gold); padding: 3px 8px; border: 2px solid; border-color: #ffcc66 #aa7700 #aa7700 #ffcc66; }
+.onChainBadge { font-family: var(--font-pixel); font-size: 7px; color: #55ff55; padding: 3px 8px; background: rgba(85,255,85,0.1); border: 2px solid rgba(85,255,85,0.3); }
+.cardTime { font-family: var(--font-pixel); font-size: 7px; color: var(--text-gray); }
+.cardImgWrap { width: 100%; max-height: 400px; overflow: hidden; }
+.cardImg { width: 100%; height: auto; object-fit: cover; display: block; }
+.cardBody { padding: 20px; }
+.cardQ { font-family: var(--font-pixel); font-size: 14px; color: var(--text-white); text-shadow: 2px 2px 0 #000; line-height: 1.5; margin-bottom: 12px; }
+.cardDesc { font-family: var(--font-body); font-size: 16px; color: var(--text-gray); line-height: 1.6; margin-bottom: 20px; }
+
+.probWrap { margin-bottom: 24px; }
+.probLabels { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.probYes { font-family: var(--font-pixel); font-size: 9px; color: #55ff55; text-shadow: 1px 1px 0 #000; }
+.probNo { font-family: var(--font-pixel); font-size: 9px; color: #ff5555; text-shadow: 1px 1px 0 #000; }
+.probBarOuter { height: 14px; background: #ff5555; border: 2px solid; border-color: #333 #666 #666 #333; }
+.probBarYes { height: 100%; background: #55ff55; box-shadow: inset 0 -3px 0 rgba(0,0,0,0.3); transition: width 0.5s ease; }
+
+.tradeRow { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.btnYes { font-family: var(--font-pixel); font-size: 10px; padding: 14px; background: #559955; border: 4px solid; border-color: #77cc77 #2a6a2a #2a6a2a #77cc77; color: #fff; text-shadow: 2px 2px 0 #1a4a1a; cursor: pointer; }
+.btnYes:hover { background: #66bb66; }
+.btnNo { font-family: var(--font-pixel); font-size: 10px; padding: 14px; background: #994444; border: 4px solid; border-color: #cc6666 #662222 #662222 #cc6666; color: #fff; text-shadow: 2px 2px 0 #441111; cursor: pointer; }
+.btnNo:hover { background: #bb5555; }
+
+.shareSection { display: flex; align-items: center; gap: 12px; padding: 16px 0; border-top: 2px solid #333; }
+.shareBtn { font-family: var(--font-pixel); font-size: 8px; padding: 8px 16px; background: #3a3a5a; border: 3px solid; border-color: #6666cc #2a2a5a #2a2a5a #6666cc; color: #aaaaff; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+.shareBtn:hover { background: #4a4a7a; color: #ccccff; }
+.shareCopied { font-family: var(--font-pixel); font-size: 8px; color: #55ff55; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.detailsGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.detailBox { background: #1e1e1e; border: 2px solid #333; padding: 12px; }
+.detailLabel { font-family: var(--font-pixel); font-size: 7px; color: var(--text-gray); margin-bottom: 4px; text-transform: uppercase; }
+.detailVal { font-family: var(--font-pixel); font-size: 10px; color: var(--text-white); }
+.detailValGreen { font-family: var(--font-pixel); font-size: 10px; color: #55ff55; }
+.detailValGold { font-family: var(--font-pixel); font-size: 10px; color: var(--mc-gold); }
+
+.modalOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 200; display: flex; align-items: center; justify-content: center; }
+.modalBox { background: #2a2a2a; border: 4px solid; border-color: #555 #222 #222 #555; padding: 24px; width: 420px; max-width: 90vw; }
+.modalHead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.modalHead h3 { font-family: var(--font-pixel); font-size: 11px; color: var(--text-white); text-shadow: 2px 2px 0 #000; }
+.modalClose { font-family: var(--font-pixel); font-size: 10px; color: #ff5555; background: none; border: none; cursor: pointer; }
+.modalQ { font-family: var(--font-body); font-size: 14px; color: var(--text-gray); margin-bottom: 16px; }
+.modalRow { display: flex; justify-content: space-between; padding: 8px 0; font-family: var(--font-body); font-size: 14px; color: var(--text-gray); border-bottom: 1px solid #333; }
+.modalInput { margin: 12px 0; }
+.modalInput label { font-family: var(--font-pixel); font-size: 8px; color: var(--text-gray); display: block; margin-bottom: 6px; }
+.inputBox { display: flex; align-items: center; background: #1a1a1a; border: 3px solid; border-color: #111 #444 #444 #111; padding: 0 10px; }
+.inputBox span { font-family: var(--font-pixel); font-size: 10px; color: var(--mc-gold); }
+.inputBox input { font-family: var(--font-pixel); font-size: 10px; padding: 10px 8px; background: transparent; border: none; color: var(--text-white); width: 100%; outline: none; }
+.valGreen { font-family: var(--font-pixel); font-size: 9px; color: #55ff55; }
+.valRed { font-family: var(--font-pixel); font-size: 9px; color: #ff5555; }
+.valWhite { font-family: var(--font-pixel); font-size: 9px; color: var(--text-white); }
+.valGold { font-family: var(--font-pixel); font-size: 9px; color: var(--mc-gold); }
+.modalBtnYes { font-family: var(--font-pixel); font-size: 10px; padding: 14px; width: 100%; margin-top: 16px; background: #559955; border: 4px solid; border-color: #77cc77 #2a6a2a #2a6a2a #77cc77; color: #fff; cursor: pointer; }
+.modalBtnNo { font-family: var(--font-pixel); font-size: 10px; padding: 14px; width: 100%; margin-top: 16px; background: #994444; border: 4px solid; border-color: #cc6666 #662222 #662222 #cc6666; color: #fff; cursor: pointer; }
+.modalNote { font-family: var(--font-body); font-size: 12px; color: #666; text-align: center; margin-top: 12px; }
+
+.walletPickerBox { background: #2a2a2a; border: 4px solid; border-color: #555 #222 #222 #555; padding: 24px; width: 380px; max-width: 90vw; }
+.networkToggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+.netBtn { font-family: var(--font-pixel); font-size: 7px; padding: 8px; background: #1a1a1a; border: 2px solid #333; color: var(--text-gray); cursor: pointer; }
+.netActive { background: #2a4a2a; border-color: #55ff55; color: #55ff55; }
+.sandboxInfo { background: #1a2a1a; border: 2px solid #2a4a2a; padding: 10px; margin-bottom: 12px; text-align: center; }
+.sandboxInfo span { font-family: var(--font-pixel); font-size: 9px; color: #55ff55; }
+.sandboxNote { font-family: var(--font-body); font-size: 12px; color: #55aa55; margin-top: 4px; }
+.walletList { display: flex; flex-direction: column; gap: 6px; }
+.walletOption { display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: #1a1a1a; border: 2px solid #333; cursor: pointer; color: var(--text-white); }
+.walletOption:hover { border-color: var(--wallet-color, #666); background: #2a2a2a; }
+.walletIcon { font-size: 20px; }
+.walletNameText { font-family: var(--font-pixel); font-size: 8px; }
+
+.tradeToast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #2a4a2a; border: 3px solid; border-color: #55ff55 #1a3a1a #1a3a1a #55ff55; padding: 12px 24px; z-index: 300; font-family: var(--font-pixel); font-size: 8px; color: #55ff55; text-shadow: 1px 1px 0 #000; animation: toastSlide 0.3s ease; }
+@keyframes toastSlide { from { transform: translateX(-50%) translateY(20px); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } }
+
+.loadingMsg { text-align: center; padding: 80px 20px; }
+.loadDots { font-family: var(--font-pixel); font-size: 10px; color: var(--mc-gold); animation: pixelBounce 1s infinite; display: inline-block; }
+@keyframes pixelBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.errorMsg { text-align: center; padding: 80px 20px; }
+.errorText { font-family: var(--font-pixel); font-size: 10px; color: #ff5555; text-shadow: 1px 1px 0 #000; }
+
+.sandboxBanner { background: rgba(85,255,85,0.08); border: 2px solid rgba(85,255,85,0.2); padding: 10px 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+.sandboxBannerText { font-family: var(--font-pixel); font-size: 7px; color: #55ff55; }
+.sandboxBannerSub { font-family: var(--font-body); font-size: 12px; color: #55aa55; }

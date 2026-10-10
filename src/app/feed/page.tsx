@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import styles from "./feed.module.css";
 import Link from "next/link";
 import Image from "next/image";
@@ -221,12 +221,14 @@ export default function FeedPage() {
                     </div>
 
                     {m.imageUrl && (
-                      <div className={styles.cardImgWrap}>
+                      <Link href={`/market/${m.marketId}`} className={styles.cardImgWrap}>
                         <img src={m.imageUrl} alt="" className={styles.cardImg} />
-                      </div>
+                      </Link>
                     )}
 
-                    <h2 className={styles.cardQ}>{m.question || `Market ${m.marketId.slice(0, 12)}...`}</h2>
+                    <Link href={`/market/${m.marketId}`} className={styles.cardQLink}>
+                      <h2 className={styles.cardQ}>{m.question || `Market ${m.marketId.slice(0, 12)}...`}</h2>
+                    </Link>
                     {!m.question && <p className={styles.cardAddr}>{m.marketId}</p>}
 
                     {m.description && (
@@ -256,7 +258,20 @@ export default function FeedPage() {
 
                     <div className={styles.cardFoot}>
                       <span className={styles.cardPhase}>{m.phase}</span>
-                      {m.volume !== undefined && <span className={styles.cardVol}>Vol: ${m.volume.toLocaleString()}</span>}
+                      <div className={styles.cardFootRight}>
+                        {m.volume !== undefined && <span className={styles.cardVol}>Vol: ${m.volume.toLocaleString()}</span>}
+                        <button className={styles.shareBtn} onClick={(e) => {
+                          e.stopPropagation();
+                          const url = `${window.location.origin}/market/${m.marketId}`;
+                          navigator.clipboard.writeText(url).then(() => {
+                            setTradeSuccess(`Link copied! Share: ${url.slice(0, 50)}...`);
+                            playClick();
+                            setTimeout(() => setTradeSuccess(null), 3000);
+                          });
+                        }} title="Copy share link">
+                          🔗
+                        </button>
+                      </div>
                     </div>
                   </article>
                 );
