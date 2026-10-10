@@ -55,6 +55,7 @@ export default function FeedPage() {
   const [modal, setModal] = useState<{market: Market; side: "yes"|"no"} | null>(null);
   const [amount, setAmount] = useState("10");
   const [tradeSuccess, setTradeSuccess] = useState<string | null>(null);
+  const [tradeError, setTradeError] = useState<string | null>(null);
   const wallet = useWallet();
 
   useEffect(() => {
@@ -374,16 +375,7 @@ export default function FeedPage() {
                     const quote = await quoteRes.json();
                     if (quote.error) {
                       setTradeSuccess(null);
-                      setModal(null);
-                      // Show insufficient funds warning with sandbox suggestion
-                      const switchToSandbox = confirm(
-                        `⚠️ Insufficient USDC in your wallet!\n\nYou need $${amount} USDC on Solana mainnet to place this trade.\n\nYour options:\n• Fund your wallet with USDC on Solana\n• Switch to Sandbox mode (free $1000 test USDC)\n\nSwitch to Sandbox mode now?`
-                      );
-                      if (switchToSandbox) {
-                        wallet.setNetwork("devnet");
-                        setTradeSuccess("Switched to Sandbox! You have $" + wallet.sandboxBalance + " test USDC. Try again!");
-                        setTimeout(() => setTradeSuccess(null), 4000);
-                      }
+                      setTradeError(`You need $${amount} USDC on Solana to place this trade. Your wallet doesn't have enough USDC.`);
                       return;
                     }
 
@@ -396,15 +388,7 @@ export default function FeedPage() {
                     const build = await buildRes.json();
                     if (build.error) {
                       setTradeSuccess(null);
-                      setModal(null);
-                      const switchToSandbox = confirm(
-                        `⚠️ Transaction failed!\n\n${build.error}\n\nThis usually means insufficient USDC balance.\n\nSwitch to Sandbox mode?`
-                      );
-                      if (switchToSandbox) {
-                        wallet.setNetwork("devnet");
-                        setTradeSuccess("Switched to Sandbox! Try again with test USDC.");
-                        setTimeout(() => setTradeSuccess(null), 4000);
-                      }
+                      setTradeError(`Transaction build failed: ${build.error}. You likely need more USDC in your wallet.`);
                       return;
                     }
 
@@ -473,14 +457,10 @@ export default function FeedPage() {
                     playEnchant(); setTimeout(() => setTradeSuccess(null), 6000); setModal(null);
                   } catch (e: any) {
                     setTradeSuccess(null);
-                    setModal(null);
-                    const switchToSandbox = confirm(
-                      `⚠️ Trade failed!\n\n${e.message || "Could not connect to Panta API"}\n\nSwitch to Sandbox mode to trade with test funds?`
-                    );
-                    if (switchToSandbox) {
-                      wallet.setNetwork("devnet");
-                      setTradeSuccess("Switched to Sandbox! Try again.");
-                      setTimeout(() => setTradeSuccess(null), 4000);
+                    if (e.message?.includes("User rejected")) {
+                      setTradeError("Transaction was rejected in your wallet.");
+                    } else {
+                      setTradeError(`Trade failed: ${e.message || "Could not connect"}. Try Sandbox mode for free trading!`);
                     }
                   }
                 } else {
@@ -503,6 +483,29 @@ export default function FeedPage() {
               <button className={modal.side === "yes" ? styles.modalBtnYes : styles.modalBtnNo} onClick={() => wallet.connect()}>
                 Connect Wallet to Trade
               </button>
+            )}
+            {tradeError && (
+              <div className={styles.tradeErrorBox}>
+                <div className={styles.tradeErrorIcon}>⚠️</div>
+                <p className={styles.tradeErrorMsg}>{tradeError}</p>
+                <div className={styles.tradeErrorBtns}>
+                  <button className={styles.tradeErrorBtnGreen} onClick={() => {
+                    setTradeError(null);
+                    wallet.setNetwork("devnet");
+                    setTradeSuccess("Switched to Sandbox! You have $" + wallet.sandboxBalance + " test USDC.");
+                    setTimeout(() => setTradeSuccess(null), 4000);
+                  }}>
+                    ⛏ Switch to Sandbox
+                  </button>
+                  <button className={styles.tradeErrorBtnGray} onClick={() => {
+                    setTradeError(null);
+                    window.open("https://jup.ag/swap/SOL-USDC", "_blank");
+                  }}>
+                    💰 Get USDC
+                  </button>
+                </div>
+                <button className={styles.tradeErrorDismiss} onClick={() => setTradeError(null)}>dismiss</button>
+              </div>
             )}
             <p className={styles.modalNote}>
               {wallet.network === "mainnet"

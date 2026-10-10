@@ -178,3 +178,15 @@
 .cardFootRight { display: flex; align-items: center; gap: 8px; }
 .shareBtn { font-family: var(--font-pixel); font-size: 10px; padding: 4px 8px; background: transparent; border: 2px solid transparent; color: var(--text-gray); cursor: pointer; opacity: 0.5; transition: opacity 0.15s; }
 .shareBtn:hover { opacity: 1; border-color: #555; }
+
+/* Trade Error Box (in-modal) */
+.tradeErrorBox { background: rgba(255,85,85,0.08); border: 2px solid rgba(255,85,85,0.3); padding: 16px; margin-top: 12px; text-align: center; animation: fadeIn 0.2s ease; }
+.tradeErrorIcon { font-size: 28px; margin-bottom: 8px; }
+.tradeErrorMsg { font-family: var(--font-body); font-size: 15px; color: #ff8888; line-height: 1.5; margin-bottom: 12px; }
+.tradeErrorBtns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+.tradeErrorBtnGreen { font-family: var(--font-pixel); font-size: 8px; padding: 10px; background: #336633; border: 3px solid; border-color: #55aa55 #1a4a1a #1a4a1a #55aa55; color: var(--text-green); cursor: pointer; }
+.tradeErrorBtnGreen:hover { background: #449944; }
+.tradeErrorBtnGray { font-family: var(--font-pixel); font-size: 8px; padding: 10px; background: #3a3a3a; border: 3px solid; border-color: #666 #222 #222 #666; color: var(--text-gray); cursor: pointer; }
+.tradeErrorBtnGray:hover { background: #4a4a4a; color: var(--text-white); }
+.tradeErrorDismiss { font-family: var(--font-body); font-size: 13px; color: #666; background: none; border: none; cursor: pointer; padding: 4px; }
+.tradeErrorDismiss:hover { color: #aaa; }
