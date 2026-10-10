@@ -365,14 +365,27 @@ export default function FeedPage() {
 
                 if (wallet.network === "mainnet") {
                   try {
-                    setTradeSuccess("Quoting via Panta API...");
+                    setTradeSuccess("Checking wallet & quoting via Panta API...");
                     const quoteRes = await fetch("/api/trade", {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
                       body: JSON.stringify({ action: "quote", wallet: wallet.address, marketId: modal.market.marketId, side: modal.side, amountUsdc: amount }),
                     });
                     const quote = await quoteRes.json();
-                    if (quote.error) { setTradeSuccess(`Quote: ${quote.error}`); setTimeout(() => setTradeSuccess(null), 5000); return; }
+                    if (quote.error) {
+                      setTradeSuccess(null);
+                      setModal(null);
+                      // Show insufficient funds warning with sandbox suggestion
+                      const switchToSandbox = confirm(
+                        `⚠️ Insufficient USDC in your wallet!\n\nYou need $${amount} USDC on Solana mainnet to place this trade.\n\nYour options:\n• Fund your wallet with USDC on Solana\n• Switch to Sandbox mode (free $1000 test USDC)\n\nSwitch to Sandbox mode now?`
+                      );
+                      if (switchToSandbox) {
+                        wallet.setNetwork("devnet");
+                        setTradeSuccess("Switched to Sandbox! You have $" + wallet.sandboxBalance + " test USDC. Try again!");
+                        setTimeout(() => setTradeSuccess(null), 4000);
+                      }
+                      return;
+                    }
 
                     setTradeSuccess(`Quote: ${quote.shares} shares. Building tx...`);
                     const buildRes = await fetch("/api/trade", {
@@ -381,7 +394,19 @@ export default function FeedPage() {
                       body: JSON.stringify({ action: "build", quoteId: quote.quoteId, wallet: wallet.address, maxSlippageBps: 300 }),
                     });
                     const build = await buildRes.json();
-                    if (build.error) { setTradeSuccess(`Build: ${build.error}`); setTimeout(() => setTradeSuccess(null), 5000); return; }
+                    if (build.error) {
+                      setTradeSuccess(null);
+                      setModal(null);
+                      const switchToSandbox = confirm(
+                        `⚠️ Transaction failed!\n\n${build.error}\n\nThis usually means insufficient USDC balance.\n\nSwitch to Sandbox mode?`
+                      );
+                      if (switchToSandbox) {
+                        wallet.setNetwork("devnet");
+                        setTradeSuccess("Switched to Sandbox! Try again with test USDC.");
+                        setTimeout(() => setTradeSuccess(null), 4000);
+                      }
+                      return;
+                    }
 
                     wallet.addPosition({
                       marketId: modal.market.marketId, question: modal.market.question, side: modal.side,
@@ -390,8 +415,24 @@ export default function FeedPage() {
                     });
                     setTradeSuccess(`Order via Panta API! ${build.expectedShares || shares.toFixed(1)} ${modal.side.toUpperCase()} shares`);
                     playEnchant(); setTimeout(() => setTradeSuccess(null), 5000); setModal(null);
-                  } catch (e: any) { setTradeSuccess(`Error: ${e.message}`); setTimeout(() => setTradeSuccess(null), 5000); }
+                  } catch (e: any) {
+                    setTradeSuccess(null);
+                    setModal(null);
+                    const switchToSandbox = confirm(
+                      `⚠️ Trade failed!\n\n${e.message || "Could not connect to Panta API"}\n\nSwitch to Sandbox mode to trade with test funds?`
+                    );
+                    if (switchToSandbox) {
+                      wallet.setNetwork("devnet");
+                      setTradeSuccess("Switched to Sandbox! Try again.");
+                      setTimeout(() => setTradeSuccess(null), 4000);
+                    }
+                  }
                 } else {
+                  if (wallet.sandboxBalance < Number(amount)) {
+                    setTradeSuccess(`Insufficient sandbox balance! You have $${wallet.sandboxBalance.toFixed(2)} USDC`);
+                    setTimeout(() => setTradeSuccess(null), 4000);
+                    return;
+                  }
                   wallet.addPosition({
                     marketId: modal.market.marketId, question: modal.market.question, side: modal.side,
                     shares, avgPrice: price, costBasis: Number(amount), currentPrice: price, timestamp: Date.now(), category: modal.market.category,
@@ -408,7 +449,9 @@ export default function FeedPage() {
               </button>
             )}
             <p className={styles.modalNote}>
-              Trades settle on Solana via Panta API. Requires Phantom wallet + USDC.
+              {wallet.network === "mainnet"
+                ? "Mainnet — requires USDC in your Solana wallet. No funds? Switch to Sandbox!"
+                : "Sandbox mode — no real money needed. Free to experiment!"}
             </p>
           </div>
         </div>
