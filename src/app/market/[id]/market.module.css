@@ -18,7 +18,7 @@
 .walletBtn:hover { background: #66bb66; }
 .walletBtnConnected { font-family: var(--font-pixel); font-size: 8px; padding: 6px 14px; background: #1a4a1a; border: 3px solid; border-color: #2ee8bb #0a3a0a #0a3a0a #2ee8bb; color: #55ffff; text-shadow: 1px 1px 0 #000; cursor: pointer; }
 
-.content { max-width: 800px; margin: 0 auto; padding: 32px 20px; }
+.content { max-width: 680px; margin: 0 auto; padding: 24px 16px; }
 .backLink { font-family: var(--font-pixel); font-size: 8px; color: var(--text-gray); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 20px; padding: 6px 12px; background: #2a2a2a; border: 2px solid #444; }
 .backLink:hover { color: var(--text-white); border-color: #666; }
 
@@ -28,23 +28,23 @@
 .cardCat { font-family: var(--font-pixel); font-size: 7px; color: #1a1a1a; background: var(--mc-gold); padding: 3px 8px; border: 2px solid; border-color: #ffcc66 #aa7700 #aa7700 #ffcc66; }
 .onChainBadge { font-family: var(--font-pixel); font-size: 7px; color: #55ff55; padding: 3px 8px; background: rgba(85,255,85,0.1); border: 2px solid rgba(85,255,85,0.3); }
 .cardTime { font-family: var(--font-pixel); font-size: 7px; color: var(--text-gray); }
-.cardImgWrap { width: 100%; max-height: 400px; overflow: hidden; }
-.cardImg { width: 100%; height: auto; object-fit: cover; display: block; }
-.cardBody { padding: 20px; }
-.cardQ { font-family: var(--font-pixel); font-size: 14px; color: var(--text-white); text-shadow: 2px 2px 0 #000; line-height: 1.5; margin-bottom: 12px; }
-.cardDesc { font-family: var(--font-body); font-size: 16px; color: var(--text-gray); line-height: 1.6; margin-bottom: 20px; }
+.cardImgWrap { width: 100%; height: 180px; overflow: hidden; border-bottom: 2px solid #333; }
+.cardImg { width: 100%; height: 100%; object-fit: cover; display: block; image-rendering: auto; }
+.cardBody { padding: 16px; }
+.cardQ { font-family: var(--font-pixel); font-size: 11px; color: var(--text-white); text-shadow: 2px 2px 0 #000; line-height: 1.5; margin-bottom: 8px; }
+.cardDesc { font-family: var(--font-body); font-size: 15px; color: var(--text-gray); line-height: 1.5; margin-bottom: 14px; }
 
-.probWrap { margin-bottom: 24px; }
+.probWrap { margin-bottom: 16px; }
 .probLabels { display: flex; justify-content: space-between; margin-bottom: 6px; }
 .probYes { font-family: var(--font-pixel); font-size: 9px; color: #55ff55; text-shadow: 1px 1px 0 #000; }
 .probNo { font-family: var(--font-pixel); font-size: 9px; color: #ff5555; text-shadow: 1px 1px 0 #000; }
 .probBarOuter { height: 14px; background: #ff5555; border: 2px solid; border-color: #333 #666 #666 #333; }
 .probBarYes { height: 100%; background: #55ff55; box-shadow: inset 0 -3px 0 rgba(0,0,0,0.3); transition: width 0.5s ease; }
 
-.tradeRow { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-.btnYes { font-family: var(--font-pixel); font-size: 10px; padding: 14px; background: #559955; border: 4px solid; border-color: #77cc77 #2a6a2a #2a6a2a #77cc77; color: #fff; text-shadow: 2px 2px 0 #1a4a1a; cursor: pointer; }
+.tradeRow { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.btnYes { font-family: var(--font-pixel); font-size: 9px; padding: 10px; background: #559955; border: 3px solid; border-color: #77cc77 #2a6a2a #2a6a2a #77cc77; color: #fff; text-shadow: 1px 1px 0 #1a4a1a; cursor: pointer; }
 .btnYes:hover { background: #66bb66; }
-.btnNo { font-family: var(--font-pixel); font-size: 10px; padding: 14px; background: #994444; border: 4px solid; border-color: #cc6666 #662222 #662222 #cc6666; color: #fff; text-shadow: 2px 2px 0 #441111; cursor: pointer; }
+.btnNo { font-family: var(--font-pixel); font-size: 9px; padding: 10px; background: #994444; border: 3px solid; border-color: #cc6666 #662222 #662222 #cc6666; color: #fff; text-shadow: 1px 1px 0 #441111; cursor: pointer; }
 .btnNo:hover { background: #bb5555; }
 
 .shareSection { display: flex; align-items: center; gap: 12px; padding: 16px 0; border-top: 2px solid #333; }
@@ -53,12 +53,12 @@
 .shareCopied { font-family: var(--font-pixel); font-size: 8px; color: #55ff55; animation: fadeIn 0.2s ease; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-.detailsGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-.detailBox { background: #1e1e1e; border: 2px solid #333; padding: 12px; }
-.detailLabel { font-family: var(--font-pixel); font-size: 7px; color: var(--text-gray); margin-bottom: 4px; text-transform: uppercase; }
-.detailVal { font-family: var(--font-pixel); font-size: 10px; color: var(--text-white); }
-.detailValGreen { font-family: var(--font-pixel); font-size: 10px; color: #55ff55; }
-.detailValGold { font-family: var(--font-pixel); font-size: 10px; color: var(--mc-gold); }
+.detailsGrid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.detailBox { background: #1e1e1e; border: 2px solid #333; padding: 8px; }
+.detailLabel { font-family: var(--font-pixel); font-size: 6px; color: var(--text-gray); margin-bottom: 3px; text-transform: uppercase; }
+.detailVal { font-family: var(--font-pixel); font-size: 8px; color: var(--text-white); }
+.detailValGreen { font-family: var(--font-pixel); font-size: 8px; color: #55ff55; }
+.detailValGold { font-family: var(--font-pixel); font-size: 8px; color: var(--mc-gold); }
 
 .modalOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 200; display: flex; align-items: center; justify-content: center; }
 .modalBox { background: #2a2a2a; border: 4px solid; border-color: #555 #222 #222 #555; padding: 24px; width: 420px; max-width: 90vw; }
